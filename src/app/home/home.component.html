@@ -4,3 +4,9 @@
 }"
 (click)="firstClick()" >🎬 The Home Of The Time Series 🎬</h1>
 
+<ul *ngIf="movies$">
+  <li *ngFor="let movie of movies$.Search">
+    <img [src] = "movie.Poster">
+    <p>{{movie.Title}}( {{movie.Year}} )</p>
+  </li>
+</ul>

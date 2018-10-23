@@ -4,7 +4,8 @@ import { HttpClient } from '@angular/common/http';
   providedIn: 'root'
 })
 export class DataService {
-  idMovie = 'tt0212712';
+  idMovie = 'Batman&type=series&page=1-3';
+
   constructor(private http: HttpClient) { }
 
   firstClick() {
@@ -12,6 +13,6 @@ export class DataService {
   }
 
   getAMovie () {
-    return this.http.get('http://www.omdbapi.com/?i=' + this.idMovie + '&apikey=37a27720');
+    return this.http.get<Object[]>('http://www.omdbapi.com/?s=' + this.idMovie + '&apikey=37a27720');
   }
 }

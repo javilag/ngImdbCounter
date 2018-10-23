@@ -8,10 +8,15 @@ import { DataService } from '../services/data.service';
 })
 export class HomeComponent implements OnInit {
   h1Style = false;
+  movie: Object; 
 
   constructor(private data: DataService) { }
 
   ngOnInit() {
+    this.data.getAMovie().subscribe(data => {
+      this.movie = data;
+      console.log(this.movie);
+    });
   }
 
   firstClick() {

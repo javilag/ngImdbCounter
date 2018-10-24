@@ -3,7 +3,15 @@
   'large': h1Style
 }"
 (click)="firstClick()" >🎬 The Home Of The Time Series🎬</h1>
-
+<br>
+<br>
+<br>
+<mat-form-field class="example-full-width">
+  <input matInput #inputMovies type="text" placeholder="Search for your Series 🎬">
+</mat-form-field>
+<br>
+<br>
+<br>
 <ul *ngIf="movies$">
   <li *ngFor="let movie of movies$.Search">
     <a (click)="takingTime(movie.imdbID)"><img [src] = "movie.Poster"></a>

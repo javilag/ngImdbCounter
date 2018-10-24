@@ -1,11 +1,23 @@
+/deep/ .mat-form-field-ripple {
+    background-color: #F5DE50 !important;
+}
+/deep/ .mat-focused .mat-form-field-label {
+    color: rgb(68, 64, 5) !important;
+}
+
 .gray {
-    color: rgb(110, 104, 14);
+    color: #DBA506;
     margin: auto;
     width: 60%;
     padding: 0px;
 }
 .large {
     font-size: 2em;
+}
+.example-full-width {
+    width: 100%;
+    margin: auto;
+    padding: 0px;
 }
 
 ul {

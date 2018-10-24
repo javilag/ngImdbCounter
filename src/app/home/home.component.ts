@@ -1,6 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { DataService } from '../services/data.service';
-import { observable } from 'rxjs';
+import { Observable, fromEvent } from 'rxjs';
+import { debounceTime, distinctUntilChanged, map, switchMap, tap } from 'rxjs/operators';
+
 
 @Component({
   selector: 'app-home',
@@ -8,8 +10,15 @@ import { observable } from 'rxjs';
   styleUrls: ['./home.component.scss']
 })
 export class HomeComponent implements OnInit {
+  private inputMovies: HTMLInputElement;
+  @ViewChild('inputMovies') inputMoviesref: ElementRef;
+  private inputMovies$: Observable<Event>;
+  private inputMovies$query: Observable<string>;
+
   h1Style = false;
-  numberOfChapters:number =0;
+  private debounceDelay = 300;
+
+  numberOfChapters:number = 0;
   time4UserWithBasisNec: string;
   time4UserOnlyInTheBed: string;
   runTime4Chap: number;
@@ -19,10 +28,13 @@ export class HomeComponent implements OnInit {
   constructor(private data: DataService) { }
 
   ngOnInit() {
-    this.data.getAMovie().subscribe(data => {
+    this.inputMovies = this.inputMoviesref.nativeElement;
+    this.inputMovies$ = fromEvent(this.inputMovies, 'keyup');
+    this.data.getABunchOfBatmanMovies().subscribe(data => {
       this.movies$ = data;
       console.log(this.movies$);
     });
+    this.searching4AMovie();
   }
 
   firstClick() {
@@ -37,6 +49,7 @@ export class HomeComponent implements OnInit {
       for (index = 1; index <= parseInt(data.totalSeasons); index++) {
         this.data.gettingTheRealNumberChapters(imdbId, index).subscribe(data2 => {
           this.numberOfChapters += data2.Episodes.length;
+          console.log(data2);
         });
       }
       console.log(this.numberOfChapters);
@@ -47,5 +60,17 @@ export class HomeComponent implements OnInit {
       this.selectMovie = data.imdbID;
       this.numberOfChapters = 0;
     });
+  }
+  searching4AMovie() {
+    this.inputMovies$query = this.inputMovies$.pipe(
+      map(() => this.inputMovies.value),
+      debounceTime(this.debounceDelay),
+      distinctUntilChanged(),
+    );
+    this.inputMovies$query.pipe(
+      switchMap((query) => this.data.getAMovieByName(query))
+    ).subscribe(
+      result => this.movies$ = result,
+    );
   }
 }

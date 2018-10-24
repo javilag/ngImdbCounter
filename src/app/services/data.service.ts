@@ -4,7 +4,7 @@ import { HttpClient } from '@angular/common/http';
   providedIn: 'root'
 })
 export class DataService {
-  idMovie = 'Batman&type=series&page=1-3';
+  idMovie = 'Batman&type=series&page=1';
 
   constructor(private http: HttpClient) { }
 
@@ -12,12 +12,16 @@ export class DataService {
     return console.log('you kiss my lips apocalypse');
   }
 
-  getAMovie () {
+  getABunchOfBatmanMovies () {
     return this.http.get<Object[]>('http://www.omdbapi.com/?s=' + this.idMovie + '&apikey=37a27720');
   }
 
+  getAMovieByName (movieName: string) {
+    return this.http.get<Object[]>('http://www.omdbapi.com/?s=' + movieName + '&type=series&apikey=37a27720');
+  }
+
   selectingASpecificRuntime (imdbId: string) {
-    const gettingMovie = this.http.get<any>('http://www.omdbapi.com/?i=' + imdbId + '&apikey=37a27720');
+    const gettingMovie = this.http.get<any>('http://www.omdbapi.com/?i=' + imdbId + '&page=1&apikey=37a27720');
     return gettingMovie;
   }
 

@@ -1,12 +1,16 @@
 <h1 [ngClass]="{
-  'gray': h1Style,
+  'gray': !h1Style,
   'large': h1Style
 }"
-(click)="firstClick()" >🎬 The Home Of The Time Series 🎬</h1>
+(click)="firstClick()" >🎬 The Home Of The Time Series🎬</h1>
 
 <ul *ngIf="movies$">
   <li *ngFor="let movie of movies$.Search">
-    <img [src] = "movie.Poster">
+    <a (click)="takingTime(movie.imdbID)"><img [src] = "movie.Poster"></a>
     <p>{{movie.Title}}( {{movie.Year}} )</p>
+    <br>
+    <div  *ngIf="time4UserOnlyInTheBed && movie.imdbID === selectMovie">this series will take: {{time4UserOnlyInTheBed}} Hours of your life</div>
+    <br>
+    <div  *ngIf="time4UserWithBasisNec && movie.imdbID === selectMovie">this series will take: {{time4UserWithBasisNec}} Hours of your life if you go to the bath or do something of 5 minutes between every chapter</div>
   </li>
 </ul>

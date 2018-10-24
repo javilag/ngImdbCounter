@@ -1,5 +1,8 @@
 .gray {
     color: rgb(110, 104, 14);
+    margin: auto;
+    width: 60%;
+    padding: 0px;
 }
 .large {
     font-size: 2em;
@@ -20,6 +23,13 @@ ul {
         p {
             font-weight: bold;
             margin-left: 20px;
+            
+            div{
+                margin: auto;
+                width: 50%;
+                border: 3px solid green;
+                padding: 10px;
+            }
         }
 
         img {

@@ -9,8 +9,8 @@
     <a (click)="takingTime(movie.imdbID)"><img [src] = "movie.Poster"></a>
     <p>{{movie.Title}}( {{movie.Year}} )</p>
     <br>
-    <div  *ngIf="time4UserOnlyInTheBed && movie.imdbID === selectMovie">this series will take: {{time4UserOnlyInTheBed}} Hours of your life</div>
+    <div  *ngIf="time4UserOnlyInTheBed && movie.imdbID === selectMovie && time4UserOnlyInTheBed != 0">this series will take: {{time4UserOnlyInTheBed}} Hours of your life</div>
     <br>
-    <div  *ngIf="time4UserWithBasisNec && movie.imdbID === selectMovie">this series will take: {{time4UserWithBasisNec}} Hours of your life if you go to the bath or do something of 5 minutes between every chapter</div>
+    <div  *ngIf="time4UserWithBasisNec && movie.imdbID === selectMovie && time4UserWithBasisNec != 0">this series will take: {{time4UserWithBasisNec}} Hours of your life if you go to the bath or do something of 5 minutes between every chapter</div>
   </li>
 </ul>

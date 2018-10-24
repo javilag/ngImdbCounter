@@ -34,7 +34,6 @@ export class HomeComponent implements OnInit {
     this.data.selectingASpecificRuntime(imdbId).subscribe(data => {
       console.log(data);
       let index;
-
       for (index = 1; index <= parseInt(data.totalSeasons); index++) {
         this.data.gettingTheRealNumberChapters(imdbId, index).subscribe(data2 => {
           this.numberOfChapters += data2.Episodes.length;

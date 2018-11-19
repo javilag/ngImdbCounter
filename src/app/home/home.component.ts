@@ -44,21 +44,13 @@ export class HomeComponent implements OnInit {
 
   takingTime(imdbId: string) {
     this.data.selectingASpecificRuntime(imdbId).subscribe(data => {
-      console.log(data);
-      let index;
+      let index, numberOfChapters = 0;
       for (index = 1; index <= parseInt(data.totalSeasons); index++) {
         this.data.gettingTheRealNumberChapters(imdbId, index).subscribe(data2 => {
-          this.numberOfChapters += data2.Episodes.length;
-          console.log(data2);
+          numberOfChapters += data2.Episodes.length;
+          this.printTymeforUser(numberOfChapters, data);
         });
       }
-      console.log(this.numberOfChapters);
-      this.time4UserOnlyInTheBed = ((parseFloat(data.totalSeasons) * this.numberOfChapters * parseFloat(data.Runtime.split(' ')[0]))
-      / 60).toFixed(2);
-      this.time4UserWithBasisNec = ((parseFloat(data.totalSeasons) * this.numberOfChapters * (parseFloat(data.Runtime.split(' ')[0]) + 5))
-      / 60).toFixed(2);
-      this.selectMovie = data.imdbID;
-      this.numberOfChapters = 0;
     });
   }
   searching4AMovie() {
@@ -73,4 +65,14 @@ export class HomeComponent implements OnInit {
       result => this.movies$ = result,
     );
   }
+
+  printTymeforUser(numberOfChapters, data) {
+    this.numberOfChapters = numberOfChapters;
+    this.time4UserOnlyInTheBed = ((parseFloat(data.totalSeasons) * numberOfChapters * parseFloat(data.Runtime.split(' ')[0]))
+    / 60).toFixed(2);
+    this.time4UserWithBasisNec = ((parseFloat(data.totalSeasons) * numberOfChapters * (parseFloat(data.Runtime.split(' ')[0]) + 5))
+    / 60).toFixed(2);
+    this.selectMovie = data.imdbID;
+  }
+
 }

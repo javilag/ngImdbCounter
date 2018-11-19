@@ -14,8 +14,12 @@
 <br>
 <ul *ngIf="movies$">
   <li *ngFor="let movie of movies$.Search">
-    <a (click)="takingTime(movie.imdbID)"><img [src] = "movie.Poster"></a>
-    <p>{{movie.Title}}( {{movie.Year}} )</p>
+    <div class="coverImage">
+      <div (click)="takingTime(movie.imdbID)">
+        <img [src] = "movie.Poster">
+        <p>{{movie.Title}}( {{movie.Year}} )</p>
+      </div>
+    </div>
     <br>
     <div  *ngIf="time4UserOnlyInTheBed && movie.imdbID === selectMovie && time4UserOnlyInTheBed != 0">this series will take: {{time4UserOnlyInTheBed}} Hours of your life</div>
     <br>

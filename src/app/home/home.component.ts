@@ -1,36 +1,41 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
-import { DataService } from '../services/data.service';
+import { DataService } from '../data.service';
 import { Observable, fromEvent } from 'rxjs';
-import { debounceTime, distinctUntilChanged, map, switchMap, tap } from 'rxjs/operators';
-
+import {
+  debounceTime,
+  distinctUntilChanged,
+  map,
+  switchMap,
+  tap,
+} from 'rxjs/operators';
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
-  styleUrls: ['./home.component.scss']
+  styleUrls: ['./home.component.scss'],
 })
 export class HomeComponent implements OnInit {
-  private inputMovies: HTMLInputElement;
-  @ViewChild('inputMovies') inputMoviesref: ElementRef;
-  private inputMovies$: Observable<Event>;
-  private inputMovies$query: Observable<string>;
+  private inputMovies!: HTMLInputElement;
+  @ViewChild("inputMovies", { static: true }) inputMoviesref!: ElementRef;
+  private inputMovies$!: Observable<Event>;
+  private inputMovies$query!: Observable<string>;
 
   h1Style = false;
   private debounceDelay = 300;
 
-  numberOfChapters:number = 0;
-  time4UserWithBasisNec: string;
-  time4UserOnlyInTheBed: string;
-  runTime4Chap: number;
-  selectMovie: string;
-  movies$: Object[];
+  numberOfChapters: number = 0;
+  time4UserWithBasisNec!: string;
+  time4UserOnlyInTheBed!: string;
+  runTime4Chap!: number;
+  selectMovie!: string;
+  movies$!: Object[];
 
-  constructor(private data: DataService) { }
+  constructor(private data: DataService) {}
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.inputMovies = this.inputMoviesref.nativeElement;
     this.inputMovies$ = fromEvent(this.inputMovies, 'keyup');
-    this.data.getABunchOfBatmanMovies().subscribe(data => {
+    this.data.getABunchOfBatmanMovies().subscribe((data) => {
       this.movies$ = data;
       console.log(this.movies$);
     });
@@ -43,36 +48,45 @@ export class HomeComponent implements OnInit {
   }
 
   takingTime(imdbId: string) {
-    this.data.selectingASpecificRuntime(imdbId).subscribe(data => {
-      let index, numberOfChapters = 0;
+    this.data.selectingASpecificRuntime(imdbId).subscribe((data) => {
+      let index,
+        numberOfChapters = 0;
       for (index = 1; index <= parseInt(data.totalSeasons); index++) {
-        this.data.gettingTheRealNumberChapters(imdbId, index).subscribe(data2 => {
-          numberOfChapters += data2.Episodes.length;
-          this.printTymeforUser(numberOfChapters, data);
-        });
+        this.data
+          .gettingTheRealNumberChapters(imdbId, index)
+          .subscribe((data2) => {
+            numberOfChapters += data2.Episodes.length;
+            this.printTymeforUser(numberOfChapters, data);
+          });
       }
     });
   }
+  
   searching4AMovie() {
     this.inputMovies$query = this.inputMovies$.pipe(
       map(() => this.inputMovies.value),
       debounceTime(this.debounceDelay),
-      distinctUntilChanged(),
+      distinctUntilChanged()
     );
-    this.inputMovies$query.pipe(
-      switchMap((query) => this.data.getAMovieByName(query))
-    ).subscribe(
-      result => this.movies$ = result,
-    );
+    this.inputMovies$query
+      .pipe(switchMap((query) => this.data.getAMovieByName(query)))
+      .subscribe((result) => (this.movies$ = result));
   }
 
-  printTymeforUser(numberOfChapters, data) {
+  printTymeforUser(numberOfChapters:any, data:any) {
     this.numberOfChapters = numberOfChapters;
-    this.time4UserOnlyInTheBed = ((parseFloat(data.totalSeasons) * numberOfChapters * parseFloat(data.Runtime.split(' ')[0]))
-    / 60).toFixed(2);
-    this.time4UserWithBasisNec = ((parseFloat(data.totalSeasons) * numberOfChapters * (parseFloat(data.Runtime.split(' ')[0]) + 5))
-    / 60).toFixed(2);
+    this.time4UserOnlyInTheBed = (
+      (parseFloat(data.totalSeasons) *
+        numberOfChapters *
+        parseFloat(data.Runtime.split(' ')[0])) /
+      60
+    ).toFixed(2);
+    this.time4UserWithBasisNec = (
+      (parseFloat(data.totalSeasons) *
+        numberOfChapters *
+        (parseFloat(data.Runtime.split(' ')[0]) + 5)) /
+      60
+    ).toFixed(2);
     this.selectMovie = data.imdbID;
   }
-
 }

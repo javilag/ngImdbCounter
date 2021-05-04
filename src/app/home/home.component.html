@@ -1,28 +1,50 @@
 <h1 [ngClass]="{
-  'gray': !h1Style,
-  'large': h1Style
-}"
-(click)="firstClick()" >🎬 The Home Of The Time Series🎬</h1>
-<br>
-<br>
-<br>
+    'gray': !h1Style,
+    'large': h1Style
+  }"
+  (click)="firstClick()" >🎬 The Home Of The Time Series🎬</h1>
+<br />
+<br />
+<br />
 <mat-form-field class="example-full-width">
-  <input matInput #inputMovies type="text" placeholder="Search for your Series 🎬">
+  <input
+    matInput
+    #inputMovies
+    type="text"
+    placeholder="Search for your Series 🎬"
+  />
 </mat-form-field>
-<br>
-<br>
-<br>
+<br />
+<br />
+<br />
 <ul *ngIf="movies$">
   <li *ngFor="let movie of movies$.Search">
     <div class="coverImage">
       <div (click)="takingTime(movie.imdbID)">
-        <img [src] = "movie.Poster">
-        <p>{{movie.Title}}( {{movie.Year}} )</p>
+        <img [src]="movie.Poster" />
+        <p>{{ movie.Title }}( {{ movie.Year }} )</p>
       </div>
     </div>
-    <br>
-    <div  *ngIf="time4UserOnlyInTheBed && movie.imdbID === selectMovie && time4UserOnlyInTheBed != 0">this series will take: {{time4UserOnlyInTheBed}} Hours of your life</div>
-    <br>
-    <div  *ngIf="time4UserWithBasisNec && movie.imdbID === selectMovie && time4UserWithBasisNec != 0">this series will take: {{time4UserWithBasisNec}} Hours of your life if you go to the bath or do something of 5 minutes between every chapter</div>
+    <br />
+    <div
+      *ngIf="
+        time4UserOnlyInTheBed &&
+        movie.imdbID === selectMovie &&
+        time4UserOnlyInTheBed != 0
+      "
+    >
+      this series will take: {{ time4UserOnlyInTheBed }} Hours of your life
+    </div>
+    <br />
+    <div
+      *ngIf="
+        time4UserWithBasisNec &&
+        movie.imdbID === selectMovie &&
+        time4UserWithBasisNec != 0
+      "
+    >
+      this series will take: {{ time4UserWithBasisNec }} Hours of your life if
+      you go to the bath or do something of 5 minutes between every chapter
+    </div>
   </li>
 </ul>
